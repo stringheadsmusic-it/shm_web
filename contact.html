@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | String Heads Music</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <div class="container glass-panel" style="background: transparent; box-shadow: none; border: none; padding-top: 1rem; padding-bottom: 1rem; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid var(--outline-variant); border-radius: 0;">
+    <nav class="animate-rhythm" style="animation-delay: 0.1s;">
+      <a href="index.html" class="logo-lockup" style="text-decoration: none;">
+        <img src="Logos/SHM.png" alt="String Heads Music Logo">
+        <div class="logo-text">
+          <span class="brand-name">STRING HEADS</span>
+          <span class="brand-sub">MUSIC</span>
+        </div>
+      </a>
+      
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="contact.html" class="active">Contact</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="container contact-section" style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px); margin-top: var(--spacing-8);">
+    <div class="glass-panel form-container animate-rhythm" style="padding: var(--spacing-8); width: 100%; max-width: 600px; animation-delay: 0.2s;">
+      <h1 class="display-lg" style="font-size: 2.5rem; margin-bottom: var(--spacing-4); text-align: center;">Get in <span class="text-gradient">Touch</span></h1>
+      
+      <form id="contactForm" class="contact-form">
+        <div class="form-group animate-rhythm" style="animation-delay: 0.3s;">
+          <label for="fullName" class="label-md">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required class="input-field">
+        </div>
+        
+        <div class="form-group animate-rhythm" style="animation-delay: 0.4s;">
+          <label for="phone" class="label-md">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required class="input-field">
+        </div>
+        
+        <div class="form-group animate-rhythm" style="animation-delay: 0.5s;">
+          <label for="email" class="label-md">Email Address</label>
+          <input type="email" id="email" name="email" required class="input-field">
+        </div>
+        
+        <div class="form-group animate-rhythm" style="animation-delay: 0.6s;">
+          <label for="message" class="label-md">Message</label>
+          <textarea id="message" name="message" rows="5" required class="input-field" style="resize: vertical;"></textarea>
+        </div>
+        
+        <div class="form-actions animate-rhythm" style="animation-delay: 0.7s; margin-top: var(--spacing-4);">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+        </div>
+      </form>
+      
+      <!-- Success Message Holder -->
+      <div id="formSuccess" class="animate-rhythm" style="display: none; text-align: center; margin-top: var(--spacing-4); padding: var(--spacing-4); background-color: var(--surface-container-high); border-radius: var(--radius-md); border: 1px solid var(--outline-variant); color: var(--primary);">
+        <h3 class="label-md">Message Sent Successfully!</h3>
+        <p class="body-lg" style="font-size: 0.875rem; margin-top: 0.5rem;">The team will get back to you shortly.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

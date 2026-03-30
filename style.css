@@ -294,32 +294,25 @@ nav {
 
 /* Figma-Based Auto Layout (Flexbox) Logo Grid */
 .hero-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  /* Align the cluster to the right as per hero layout */
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  min-height: 800px;
+  display: grid;
+  grid-template-columns: repeat(5, 200px);
+  grid-template-rows: repeat(5, 200px);
   gap: 20px;
-  /* Base Auto-Layout Gap between lines */
-  padding-right: var(--spacing-8);
-  /* Overall scaling for better composition fit */
-  transform: scale(0.8);
-  transform-origin: center right;
+  justify-content: center;
+  align-content: center;
+  /* Rotate the whole grid by 45 degrees */
+  transform: rotate(45deg) scale(0.8);
+  transform-origin: center center;
+  position: absolute;
+  right: -250px;
+  /* Offset to the right to create the edge crop effect */
+  bottom: -200px;
+  /* Offset downwards for the bottom crop */
 }
 
 .rotated-line {
-  position: relative;
-  transform: rotate(45deg);
-  transform-origin: top left;
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-  padding: 5.58px;
-  width: fit-content;
+  display: contents;
+  /* Grid items will ignore this wrapper and align directly to .hero-grid */
 }
 
 .grid-item {

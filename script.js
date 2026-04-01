@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       // Check if at least one inquiry checkbox is checked
-      const checkboxes = contactForm.querySelectorAll('input[name="inquiry"]');
+      const checkboxes = contactForm.querySelectorAll('input[name="entry.1742913900"]');
       const isChecked = Array.from(checkboxes).some(cb => cb.checked);
       const checkboxGroup = contactForm.querySelector('.checkbox-group');
 
@@ -30,23 +30,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const errorMsg = document.getElementById('checkbox-error');
         if (errorMsg) errorMsg.remove();
       }
-      
-      // Since the user said "just create the frontend now, i'll deal with the backend later",
-      // we just simulate a successful form submission visually.
-      
+
+      // Handle actual form submission to Google Forms
       const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.textContent;
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.7';
 
-      setTimeout(() => {
-        // Hide form and show success message
-        contactForm.style.display = 'none';
-        formSuccess.style.display = 'block';
-        
-        // Form would typically be reset here if staying on the page
-        // contactForm.reset();
-      }, 800);
+      const formData = new FormData(contactForm);
+
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      })
+        .then(() => {
+          // Success state UI
+          contactForm.style.display = 'none';
+          formSuccess.style.display = 'block';
+          contactForm.reset();
+        })
+        .catch((error) => {
+          console.error('Form submission failed:', error);
+          submitBtn.textContent = originalBtnText;
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          alert('Something went wrong. Please try again later.');
+        });
     });
   }
 });

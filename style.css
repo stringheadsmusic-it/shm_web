@@ -418,6 +418,10 @@ nav {
   gap: var(--spacing-4);
 }
 
+.form-container {
+  padding: var(--spacing-8);
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -605,6 +609,16 @@ nav {
     overflow-y: auto;
   }
 
+  nav {
+    padding: 0 var(--spacing-4);
+  }
+
+  .logo-lockup {
+    transform: scale(0.6);
+    transform-origin: left center;
+  }
+
+
   .hero-section {
     display: grid;
     grid-template-columns: 1fr;
@@ -648,12 +662,7 @@ nav {
   }
 
 
-  nav {
-    padding: 0 var(--spacing-4);
-  }
-
-  .logo-lockup {
-    transform: scale(0.6);
-    transform-origin: left center;
+  .form-container {
+    padding: var(--spacing-8) 16px;
   }
 }

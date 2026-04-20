@@ -1,13 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
-  
+
   // Track when the page loaded for the time-trap spam protection
   const loadTime = Date.now();
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      // Spam Protection: Cloudflare Turnstile Check
+      const turnstileFormData = new FormData(contactForm);
+      const turnstileToken = turnstileFormData.get('cf-turnstile-response');
+      if (!turnstileToken) {
+        alert("Please wait for the security check to complete, or try again.");
+        return;
+      }
 
       // Spam Protection: Honeypot & Time-Trap Check
       const honeypot = document.getElementById('website_url');

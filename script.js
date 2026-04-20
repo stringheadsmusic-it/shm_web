@@ -1,10 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
+  
+  // Track when the page loaded for the time-trap spam protection
+  const loadTime = Date.now();
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      // Spam Protection: Honeypot & Time-Trap Check
+      const honeypot = document.getElementById('website_url');
+      const timeElapsed = Date.now() - loadTime;
+      const MIN_FILL_TIME = 4000; // 4 seconds minimum
+
+      if ((honeypot && honeypot.value !== '') || timeElapsed < MIN_FILL_TIME) {
+        // Silently block the submission but pretend it succeeded to fool bots
+        console.warn('Spam submission detected and blocked.');
+        contactForm.style.display = 'none';
+        formSuccess.style.display = 'block';
+        contactForm.reset();
+        return;
+      }
 
       // Check if at least one inquiry checkbox is checked
       const checkboxes = contactForm.querySelectorAll('input[name="entry.1742913900"]');

@@ -1,3 +1,17 @@
+// Cloudflare Turnstile Success Callback
+window.onTurnstileSuccess = function () {
+  const container = document.getElementById('turnstile-container');
+  if (container) {
+    // Smoothly fade out and collapse the widget once verified
+    container.style.opacity = '0';
+    container.style.height = '0px';
+    container.style.marginTop = '0px';
+    setTimeout(() => {
+      container.style.display = 'none';
+    }, 500);
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');

@@ -33,7 +33,7 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-  
+
   <!-- Cloudflare Turnstile -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -119,8 +119,10 @@
         </div>
 
         <!-- Cloudflare Turnstile Widget -->
-        <div class="form-group animate-rhythm" style="animation-delay: 0.65s; margin-top: 0.5rem;">
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADAA-8gfyul5PMZF" data-theme="dark"></div>
+        <div id="turnstile-container" class="form-group animate-rhythm"
+          style="animation-delay: 0.65s; margin-top: 0.5rem; transition: opacity 0.5s ease, height 0.5s ease; overflow: hidden;">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADAA-8gfyul5PMZF" data-theme="dark"
+            data-callback="onTurnstileSuccess"></div>
         </div>
 
         <div class="form-actions animate-rhythm" style="animation-delay: 0.7s; margin-top: var(--spacing-4);">

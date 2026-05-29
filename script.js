@@ -1,3 +1,7 @@
+// Google Apps Script Web App URL
+// REPLACE THIS with your deployed Web App URL from Google Sheets
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwo163-jBcvO3Eq1icHr19cNzf29mg8R2SxRkhWC75NmBYJzpI3ShvrZbRcKItzs6rD/exec";
+
 // Cloudflare Turnstile Success Callback
 window.onTurnstileSuccess = function () {
   const container = document.getElementById('turnstile-container');
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Check if at least one inquiry checkbox is checked
-      const checkboxes = contactForm.querySelectorAll('input[name="entry.1742913900"]');
+      const checkboxes = contactForm.querySelectorAll('input[name="inquiry"]');
       const isChecked = Array.from(checkboxes).some(cb => cb.checked);
       const checkboxGroup = contactForm.querySelector('.checkbox-group');
 
@@ -70,32 +74,76 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errorMsg) errorMsg.remove();
       }
 
-      // Handle actual form submission to Google Forms
+      // Handle actual form submission to Google Apps Script proxy
+      if (APPS_SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+        alert("Developer configuration required: Please deploy the Google Apps Script and update APPS_SCRIPT_URL in script.js.");
+        return;
+      }
+
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalBtnText = submitBtn.textContent;
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.7';
 
-      const formData = new FormData(contactForm);
+      // Gather checked inquiries
+      const selectedInquiries = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value)
+        .join(', ');
 
-      fetch(contactForm.action, {
+      const payload = {
+        'cf-turnstile-response': turnstileToken,
+        fullName: document.getElementById('fullName').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        inquiries: selectedInquiries,
+        message: document.getElementById('message').value
+      };
+
+      fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors'
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8' // Send as text/plain to easily avoid preflight CORS blocks
+        },
+        body: JSON.stringify(payload)
       })
-        .then(() => {
-          // Success state UI
-          contactForm.style.display = 'none';
-          formSuccess.style.display = 'block';
-          contactForm.reset();
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            // Success state UI
+            contactForm.style.display = 'none';
+            formSuccess.style.display = 'block';
+            contactForm.reset();
+          } else {
+            throw new Error(data.error || 'Verification failed.');
+          }
         })
         .catch((error) => {
           console.error('Form submission failed:', error);
           submitBtn.textContent = originalBtnText;
           submitBtn.disabled = false;
           submitBtn.style.opacity = '1';
-          alert('Something went wrong. Please try again later.');
+
+          // Reset Turnstile widget to allow another attempt
+          if (typeof turnstile !== 'undefined') {
+            turnstile.reset();
+            const container = document.getElementById('turnstile-container');
+            if (container) {
+              container.style.display = 'block';
+              container.style.opacity = '1';
+              container.style.height = 'auto';
+              container.style.marginTop = '0.5rem';
+            }
+          }
+
+          alert(`Submission failed: ${error.message || 'Please try again later.'}`);
         });
     });
   }
